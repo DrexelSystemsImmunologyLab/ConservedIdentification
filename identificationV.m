@@ -44,19 +44,21 @@ if vposition==0
 end
 
 %% Compare with germlines
-vgene = cell(size(vposition));
-mismatch = zeros(size(vposition));
-aligned_length = zeros(size(vposition));
-for i = 1:length(vposition)
-    [vgene{i}, mismatch(i), aligned_length(i)] = compareV(sequence,vposition(i));
-end
+if vposition(1)~=0
+    vgene = cell(size(vposition));
+    mismatch = zeros(size(vposition));
+    aligned_length = zeros(size(vposition));
+    for i = 1:length(vposition)
+        [vgene{i}, mismatch(i), aligned_length(i)] = compareV(sequence,vposition(i));
+    end
 
-if length(vgene)>1      % if multiple anchors
-    freq = mismatch./aligned_length;
-    [~,idx] = min(freq);     % choose the one with least mutation frequency
-    vgene = char(vgene{idx});
-    mismatch =mismatch(idx);
-    aligned_length = aligned_length(idx);
-else
-    vgene = char(vgene);
+    if length(vgene)>1      % if multiple anchors
+        freq = mismatch./aligned_length;
+        [~,idx] = min(freq);     % choose the one with least mutation frequency
+        vgene = char(vgene{idx});
+        mismatch =mismatch(idx);
+        aligned_length = aligned_length(idx);
+    else
+        vgene = char(vgene);
+    end
 end
