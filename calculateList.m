@@ -1,4 +1,4 @@
-function mix_list = calculateList(germ_db, vlength, mut_fre,prob_threshold)
+function mix_list = calculateList(germ_db, vlength, mut_freq,prob_threshold)
 %germ_db: file name for germline database
 %vlength: length of aligned V region
 %mut_fre: mutation frequency
@@ -32,7 +32,7 @@ end
 
 %% calculate prob. of mixing
 M = vlength;
-N = ceil(M*mut_fre);
+N = ceil(M*mut_freq);
 p_matrix = zeros(size(d_matrix));
 for i = 1:size(p_matrix,1)
     for j = i+1:size(p_matrix)
@@ -56,7 +56,7 @@ for i = 1:size(row,1)
 end
 
 %% print output
-outfilename = ['Vties_',strrep(germ_db,'.fasta',''),'_',num2str(vlength),'_',num2str(mut_fre),'_',num2str(prob_threshold),'.txt'];
+outfilename = ['Vties_',strrep(germ_db,'.fasta',''),'_',num2str(vlength),'_',num2str(mut_freq),'_',num2str(prob_threshold),'.txt'];
 fid = fopen(outfilename,'w');
 for i = 1:size(mix_list,1)
     fprintf(fid,'%s|%s\r',char(mix_list{i,1}),char(mix_list{i,2}));

@@ -66,8 +66,8 @@ fid = fopen(inFileName,'r');
 dataArray = textscan(fid,'%d%s%d%d','delimiter','\t');
 fclose(fid);
 vlength = mean(dataArray{4});
-mut_fre = mean(dataArray{3})/vlength;
-mix_list = calculateList('HHV.fasta', vlength, mut_fre,0.01);
+mut_freq = mean(dataArray{3})/vlength;
+mix_list = calculateList('HHV.fasta', vlength, mut_freq,0.01);
 
 %% apply v ties
 outFileName = [folder_name,'/Vties.txt'];
