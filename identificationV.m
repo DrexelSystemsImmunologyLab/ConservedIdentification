@@ -55,7 +55,12 @@ if vposition(1)~=0
     if length(vgene)>1      % if multiple anchors
         freq = mismatch./aligned_length;
         [~,idx] = min(freq);     % choose the one with least mutation frequency
+        if length(idx)>1
+            idx = idx(aligned_length==max(aligned_length));     % if equal frequency, choose the one with longest alignment
+        end
+        idx = idx(1);
         vgene = char(vgene{idx});
+        vposition = vposition(idx);
         mismatch =mismatch(idx);
         aligned_length = aligned_length(idx);
     else
