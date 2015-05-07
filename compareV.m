@@ -32,7 +32,7 @@ if mismatch>=18
     end
 end
 
-if length(indels==0)/length(indels)>0.5
+if sum(indels==0)/length(indels)>0.5
     vgene = Vname(p(indels==0));      % remove V genes that are potential indels
     indel = 0;
 else
