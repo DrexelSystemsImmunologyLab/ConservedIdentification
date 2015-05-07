@@ -41,13 +41,13 @@ for i = 1:size(seq,1)
         fprintf(fid1,'%d\r',i);     % put order number into 'noFoundJ.txt'
     end
     if jgroup~=0 && jposition~=0     % J is found
-        [vgene, vposition, mismatch, aligned_length] = identificationV(sequence);    % identify V to the left of J
+        [vgene, vposition, mismatch, aligned_length, indel] = identificationV(sequence);    % identify V to the left of J
         if isempty(vgene)      % not finding V
             fprintf(fid2,'%d\r',i);     % put order number into 'noFoundV.txt'
         elseif ~isempty(vgene);     % V is found, thus CDR3 is intact
             fprintf(fid3,'%d\r',i);     % put order number into 'intactCDR3.txt'
             fprintf(fid4,'%d\t%d\r',i,jgroup);     % put order number and J gene group into 'Jgene.txt'
-            fprintf(fid5,'%d\t%s\t%d\t%d\r',i,vgene,mismatch,aligned_length);     % put order number and V genes, number of mismatches and number of aligned nucleotides into 'Vgene.txt'
+            fprintf(fid5,'%d\t%s\t%d\t%d\t%d\r',i,vgene,mismatch,aligned_length,indel);     % put order number and V genes, number of mismatches ,number of aligned nucleotides and if indel into 'Vgene.txt'
             if mod(jposition - vposition - 19,3)==0
                 fprintf(fid6,'%d\t%s\t%s\r',i,sequence(vposition+6:jposition-14),nt2aa(sequence(vposition+6:jposition-14),'ACGTonly',false));     % put order number and in-frame CDR3 nucleotides and amino acids into 'CDR3.txt'
             else
@@ -63,7 +63,7 @@ disp('identification done');
 %% calculate v ties
 inFileName = [folder_name,'/Vgene.txt'];     % read V identification stats
 fid = fopen(inFileName,'r');
-dataArray = textscan(fid,'%d%s%d%d','delimiter','\t');
+dataArray = textscan(fid,'%d%s%d%d%d','delimiter','\t');
 fclose(fid);
 vlength = mean(dataArray{4});
 mut_freq = mean(dataArray{3})/vlength;
@@ -88,7 +88,7 @@ for i = 1:size(vgenes,1)
     elseif size(c,2)==1
         str = strjoin(c','|');
     end
-    fprintf(fid,'%d\t%s\t%d\t%d\r',dataArray{1}(i),str,dataArray{3}(i),dataArray{4}(i));     % output information into 'Vties.txt'
+    fprintf(fid,'%d\t%s\t%d\t%d\t%d\r',dataArray{1}(i),str,dataArray{3}(i),dataArray{4}(i),dataArray{5}(i));     % output information into 'Vties.txt'
 end
 fclose(fid);
 disp('applying v ties done');

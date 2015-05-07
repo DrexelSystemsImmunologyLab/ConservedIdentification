@@ -1,4 +1,4 @@
-function [vgene, vposition, mismatch, aligned_length] = identificationV(sequence)
+function [vgene, vposition, mismatch, aligned_length, indel] = identificationV(sequence)
 % finds V anchors in sequence, outputs J group and position of J in sequence
 
 vgene = '';
@@ -48,8 +48,9 @@ if vposition(1)~=0
     vgene = cell(size(vposition));
     mismatch = zeros(size(vposition));
     aligned_length = zeros(size(vposition));
+    indel = zeros(size(vposition));
     for i = 1:length(vposition)
-        [vgene{i}, mismatch(i), aligned_length(i)] = compareV(sequence,vposition(i));
+        [vgene{i}, mismatch(i), aligned_length(i), indel(i)] = compareV(sequence,vposition(i));
     end
 
     if length(vgene)>1      % if multiple anchors
@@ -63,6 +64,7 @@ if vposition(1)~=0
         vposition = vposition(idx);
         mismatch =mismatch(idx);
         aligned_length = aligned_length(idx);
+        indel = indel(idx);
     else
         vgene = char(vgene);
     end
